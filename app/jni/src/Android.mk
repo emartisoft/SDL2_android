@@ -4,15 +4,16 @@ include $(CLEAR_VARS)
 
 LOCAL_MODULE := main
 
-#path to include files writen in each MK file in each subdirs
+#path to /include files written in each Android.mk file in each subdirs
 #LOCAL_C_INCLUDES := $(LOCAL_PATH)/$(SDL_PATH)/include ....... ....... .......
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../glm/
+LOCAL_C_INCLUDES += $(LOCAL_PATH)/../freetype/include/
 
-# Add your application source files here...
+#Application source files here:
 LOCAL_SRC_FILES := main.cpp
 
-LOCAL_SHARED_LIBRARIES := SDL2 SDL2_image SDL2_mixer
+LOCAL_SHARED_LIBRARIES := SDL2 SDL2_image SDL2_mixer freetype
 
 LOCAL_LDLIBS := -lGLESv1_CM -lGLESv2 -llog
 

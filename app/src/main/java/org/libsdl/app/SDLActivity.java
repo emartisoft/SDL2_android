@@ -2,6 +2,11 @@ package org.libsdl.app;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+
+import android.content.res.AssetManager;
+import android.util.Log;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.lang.reflect.Method;
@@ -59,6 +64,8 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
     protected static final int SDL_ORIENTATION_LANDSCAPE_FLIPPED = 2;
     protected static final int SDL_ORIENTATION_PORTRAIT = 3;
     protected static final int SDL_ORIENTATION_PORTRAIT_FLIPPED = 4;
+
+    private String fontFilePath = "";
 
     protected static int mCurrentOrientation;
 
@@ -145,6 +152,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
             "SDL2",
             "SDL2_image",
             "SDL2_mixer",
+                "freetype",
             // "SDL2_net",
             // "SDL2_ttf",
             "main"
@@ -165,7 +173,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
      * @return arguments for the native application.
      */
     protected String[] getArguments() {
-        return new String[0];
+        return new String[]{fontFilePath};
     }
 
     public static void initialize() {
@@ -188,6 +196,19 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         mCurrentNativeState = NativeState.INIT;
     }
 
+    static private void copy(InputStream in, File dst) throws IOException {
+        FileOutputStream out = new FileOutputStream(dst);
+        byte[] buf = new byte[1024];
+        int len;
+
+        while ((len = in.read(buf)) > 0) {
+            out.write(buf,0, len);
+        }
+
+        in.close();
+        out.close();
+    }
+
     // Setup
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,6 +216,18 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         Log.v(TAG, "Model: " + Build.MODEL);
         Log.v(TAG, "onCreate()");
         super.onCreate(savedInstanceState);
+
+        // for font copy to APK
+        File font = new File(getFilesDir(), "Roboto-bold.ttf");
+        fontFilePath = font.getAbsolutePath();
+        if (!font.isFile()) {
+            AssetManager assets = getResources().getAssets();
+            try {
+                copy(assets.open("fonts/Roboto-bold.ttf"), font);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
         // Load shared libraries
         String errorMsgBrokenLib = "";

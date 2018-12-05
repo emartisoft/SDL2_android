@@ -4,6 +4,8 @@
 #include <SDL_image.h>
 #include <SDL_mixer.h>
 #include <glm.hpp>
+#include "ft2build.h"
+#include FT_FREETYPE_H
 
 
 int main(int argc, char* argv[])
@@ -54,13 +56,35 @@ int main(int argc, char* argv[])
     Mix_Chunk* sound_gr = Mix_LoadWAV("sounds/grenlf1a.wav");
     if (sound_gr == NULL)
     {
-        SDL_Log("Unable to load wave file");
+        SDL_Log("Error load wave file");
     } else {
         Mix_PlayChannel(-1, sound_gr, 2);
     }
 
     //SCREEN TEXT
-    //freetype
+    FT_Library ft_lib;
+    if (FT_Init_FreeType(&ft_lib))
+    {
+        SDL_Log( "freetype init error" );
+    } else
+    {
+        SDL_Log( "freetype inited" );
+    }
+
+    SDL_Log( "argv[0] = %s", argv[0] );
+    SDL_Log( "argv[1] = %s", argv[1] );
+
+    FT_Face ft_face;
+    FT_Error ft_error = FT_New_Face(ft_lib, argv[1], 0, &ft_face);
+
+    if (ft_error != 0)
+    {
+        SDL_Log( "font load error" );
+    } else
+    {
+        SDL_Log( "font loaded" );
+        FT_Set_Pixel_Sizes(ft_face, 0, 24);
+    }
 
     SDL_Log("HELLO !!!");
 
