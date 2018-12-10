@@ -108,6 +108,7 @@ void InputHandler::updateEvent()
             case SDL_FINGERUP:
                 fingerEventKind[FINGER_UP] = true;
                 fingerEventKind[FINGER_DOWN] = false;
+                fingerEventKind[FINGER_MOTION] = false;
 
                 fingerUpPos.x = event.tfinger.x * Game::instance()->getScreenWidth();
                 fingerUpPos.y = event.tfinger.y * Game::instance()->getScreenHeight();
