@@ -11,11 +11,14 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/../glm/
 LOCAL_C_INCLUDES += $(LOCAL_PATH)/../freetype/include/
 
 #Application source files here:
-LOCAL_SRC_FILES := main.cpp
+LOCAL_SRC_FILES :=      \
+            main.cpp    \
+            Game.cpp    \
+            InputHandler.cpp
 
 LOCAL_SHARED_LIBRARIES := SDL2 SDL2_image SDL2_mixer freetype
 
-LOCAL_LDLIBS := -lGLESv1_CM -lGLESv2 -llog
+LOCAL_LDLIBS := -lGLESv2 -llog
 
 
 include $(BUILD_SHARED_LIBRARY)

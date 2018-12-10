@@ -1,13 +1,55 @@
-#include <GLES2/gl2.h>
-#include <GLES2/gl2ext.h>
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_mixer.h>
-#include <glm.hpp>
-#include "ft2build.h"
-#include FT_FREETYPE_H
+#include "Game.h"
+#include "GlobalVariables.h"
 
 
+const int FPS = 60;
+const int TIME_FOR_1_LOOP = 1000 / FPS; //16,6 milisec ( 1000 milisec == 1 sec )
+
+int main(int argc, char* argv[])
+{
+    GLOBAL_VARS::FONT_PATH = argv[1];
+
+    int frameStart = 0;
+    int frameTime = 0;
+
+    Game::instance()->init();
+
+    int i = 0;
+
+    while(Game::instance()->isRunning())
+    {
+        //SDL_Log("COUNT = %i", i++);
+
+        Game::instance()->update();
+        Game::instance()->render();
+        Game::instance()->playSound();
+
+        frameTime = SDL_GetTicks() - frameStart;
+
+        //SDL_Log("frameTime = %i ", frameTime);
+
+        if(frameTime < TIME_FOR_1_LOOP)
+        {
+            SDL_Delay((int)(TIME_FOR_1_LOOP - frameTime));
+        }// loop end here !!! after sleep timeout
+
+        //time loop calculating start HERE !!!!
+        frameStart = SDL_GetTicks();
+
+        // need do before next iteration
+        Game::instance()->updateInputHandler(); // CAN close game in any state !!
+
+    }
+
+    SDL_Log("GLOBAL_VARS::FONT_PATH = %s", GLOBAL_VARS::FONT_PATH);
+    SDL_Delay(6000);
+
+    Game::instance()->endGame();
+
+    return 0;
+}
+
+/*
 int main(int argc, char* argv[])
 {
 
@@ -93,3 +135,5 @@ int main(int argc, char* argv[])
     Mix_CloseAudio();
     return 0;
 }
+
+ */
