@@ -39,6 +39,7 @@ void InputHandler::updateEvent()
             // Called on iOS in applicationWillResignActive()
             // Called on Android in onPause()
             case SDL_APP_WILLENTERBACKGROUND:
+                //Game::instance()->endGame(); or save game
 
                 SDL_Log("InputHandler switch(event.type) : SDL_APP_WILLENTERBACKGROUND");
                 break;
@@ -64,7 +65,7 @@ void InputHandler::updateEvent()
             //Called on Android in onResume()
             case SDL_APP_DIDENTERFOREGROUND:
                 SDL_Log("InputHandler switch(event.type) : SDL_APP_DIDENTERFOREGROUND");
-                Game::instance()->endGame();
+
                 break;
 // ENDMOBILE APP LIFECYCLE
 

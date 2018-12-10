@@ -42,7 +42,7 @@ int main(int argc, char* argv[])
     }
 
     SDL_Log("GLOBAL_VARS::FONT_PATH = %s", GLOBAL_VARS::FONT_PATH);
-    SDL_Delay(6000);
+    SDL_Delay(500);
 
     Game::instance()->endGame();
 
