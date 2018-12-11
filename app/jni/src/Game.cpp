@@ -121,6 +121,13 @@ void Game::update() { //physics
         SDL_Log("Position x = %f, y = %f", fingerPos.x, fingerPos.y);
     }
 
+    if(InputHandler::instance()->checkFingerEventKind(FINGER_DOWN_FAST_UP))
+    {
+        SDL_Log("InputHandler switch(event.type) : FINGER_DOWN_FAST_UP");
+        glm::vec2 fingerPos =  InputHandler::instance()->getFingerDownFastUpPos();
+        SDL_Log("Position x = %f, y = %f", fingerPos.x, fingerPos.y);
+    }
+
     InputHandler::instance()->resetFingerEvents();
 }
 

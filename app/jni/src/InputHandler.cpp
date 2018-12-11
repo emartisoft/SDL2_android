@@ -7,6 +7,11 @@
 
 InputHandler::InputHandler()
 {
+    fingerEventKind.reserve(6);
+
+    fingerEventKind.push_back(false);
+    fingerEventKind.push_back(false);
+    fingerEventKind.push_back(false);
     fingerEventKind.push_back(false);
     fingerEventKind.push_back(false);
     fingerEventKind.push_back(false);
@@ -100,6 +105,8 @@ void InputHandler::updateEvent()
                 fingerEventKind[FINGER_DOWN] = true;
                 fingerEventKind[FINGER_UP] = false;
 
+                timeFingerDown = SDL_GetTicks();
+
                 fingerDownPos.x = event.tfinger.x * Game::instance()->getScreenWidth();
                 fingerDownPos.y = event.tfinger.y * Game::instance()->getScreenHeight();
 
@@ -109,6 +116,11 @@ void InputHandler::updateEvent()
                 fingerEventKind[FINGER_UP] = true;
                 fingerEventKind[FINGER_DOWN] = false;
                 fingerEventKind[FINGER_MOTION] = false;
+
+                if(SDL_GetTicks() < timeFingerDown + 300)
+                {
+                    fingerEventKind[FINGER_DOWN_FAST_UP] = true;
+                }
 
                 fingerUpPos.x = event.tfinger.x * Game::instance()->getScreenWidth();
                 fingerUpPos.y = event.tfinger.y * Game::instance()->getScreenHeight();
@@ -122,10 +134,6 @@ void InputHandler::updateEvent()
                 break;
 //END TOUCH EVENT
 
-            default:
-
-                break;
-
         }
     }
 
@@ -136,4 +144,5 @@ void InputHandler::resetFingerEvents() {
     fingerEventKind[FINGER_DOWN] = false;
     fingerEventKind[FINGER_UP] = false;
     fingerEventKind[FINGER_MOTION] = false;
+    fingerEventKind[FINGER_DOWN_FAST_UP] = false;
 }

@@ -13,7 +13,8 @@ enum kind_finger_events
 {
     FINGER_DOWN = 0,
     FINGER_UP = 1,
-    FINGER_MOTION = 2
+    FINGER_MOTION = 2,
+    FINGER_DOWN_FAST_UP = 3 //if was touched and released faster than 0.3 sec
 
 };
 
@@ -25,6 +26,7 @@ public:
     glm::vec2 getFingerDownPos() { return fingerDownPos;}
     glm::vec2 getFingerUpPos() { return fingerUpPos;}
     glm::vec2 getFingerMotionPos() { return fingerMotionPos;}
+    glm::vec2 getFingerDownFastUpPos() { return fingerUpPos;}
 
     static InputHandler* instance()
     {
@@ -49,6 +51,8 @@ private:
     glm::ivec2 fingerMotionPos;
 
     std::vector<bool> fingerEventKind;
+
+    unsigned int timeFingerDown;
 
 };
 
