@@ -2,12 +2,13 @@
 // Created by v on 06.12.2018.
 //
 
+#include "Game.h"
 #include <GLES2/gl2.h>
 #include <GLES2/gl2ext.h>
-#include "Game.h"
 #include "SDL_mixer.h"
-#include "InputHandler.h"
+#include "EventHandler.h"
 #include "glm.hpp"
+#include "PlayState.h"
 
 Game::Game() {
 
@@ -93,49 +94,55 @@ void Game::init() {
 
     SDL_GL_GetAttribute(SDL_GL_ACCELERATED_VISUAL, &ff);
     SDL_Log( "SDL_GL_ACCELERATED_VISUAL = %i", ff );
+
+    gameStateMachine = new GameStateMachine;
+    gameStateMachine->pushState(new PlayState);
 }
 
-void Game::updateInputHandler() {
-    InputHandler::instance()->updateEvent();
+void Game::updateEventHandler() {
+    EventHandler::instance()->updateEventHandler();
 }
 
 void Game::update() { //physics
-    if(InputHandler::instance()->checkFingerEventKind(FINGER_DOWN))
+
+    gameStateMachine->update();
+
+    if(EventHandler::instance()->checkFingerEventKind(FINGER_DOWN))
     {
-        SDL_Log("InputHandler switch(event.type) : SDL_FINGER DOWN");
-        glm::vec2 fingerPos =  InputHandler::instance()->getFingerDownPos();
+        SDL_Log("EventHandler switch(event.type) : SDL_FINGER DOWN");
+        glm::vec2 fingerPos =  EventHandler::instance()->getFingerDownPos();
         SDL_Log("Position x = %f, y = %f", fingerPos.x, fingerPos.y);
     }
 
-    if(InputHandler::instance()->checkFingerEventKind(FINGER_UP))
+    if(EventHandler::instance()->checkFingerEventKind(FINGER_UP))
     {
-        SDL_Log("InputHandler switch(event.type) : SDL_FINGER UP");
-        glm::vec2 fingerPos =  InputHandler::instance()->getFingerUpPos();
+        SDL_Log("EventHandler switch(event.type) : SDL_FINGER UP");
+        glm::vec2 fingerPos =  EventHandler::instance()->getFingerUpPos();
         SDL_Log("Position x = %f, y = %f", fingerPos.x, fingerPos.y);
     }
 
-    if(InputHandler::instance()->checkFingerEventKind(FINGER_MOTION))
+    if(EventHandler::instance()->checkFingerEventKind(FINGER_MOTION))
     {
-        SDL_Log("InputHandler switch(event.type) : SDL_FINGER MOTION");
-        glm::vec2 fingerPos =  InputHandler::instance()->getFingerMotionPos();
+        SDL_Log("EventHandler switch(event.type) : SDL_FINGER MOTION");
+        glm::vec2 fingerPos =  EventHandler::instance()->getFingerMotionPos();
         SDL_Log("Position x = %f, y = %f", fingerPos.x, fingerPos.y);
     }
 
-    if(InputHandler::instance()->checkFingerEventKind(FINGER_DOWN_FAST_UP))
+    if(EventHandler::instance()->checkFingerEventKind(FINGER_DOWN_FAST_UP))
     {
-        SDL_Log("InputHandler switch(event.type) : FINGER_DOWN_FAST_UP");
-        glm::vec2 fingerPos =  InputHandler::instance()->getFingerDownFastUpPos();
+        SDL_Log("EventHandler switch(event.type) : FINGER_DOWN_FAST_UP");
+        glm::vec2 fingerPos =  EventHandler::instance()->getFingerDownFastUpPos();
         SDL_Log("Position x = %f, y = %f", fingerPos.x, fingerPos.y);
     }
 
-    InputHandler::instance()->resetFingerEvents();
+    EventHandler::instance()->resetFingerEvents();
 }
 
 void Game::render() {
     //clear all possible buffers
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //	| GL_STENCIL_BUFFER_BIT | GL_ACCUM_BUFFER_BIT);
 
-    //game_state_machine->render(); // render new graphics in dependency of previously calculated physics
+    gameStateMachine->render(); // render new graphics in dependency of previously calculated physics
 
     //glFinish(); // waiting to finish drawing
     glFlush(); // NOT waiting to finish drawing
@@ -143,12 +150,18 @@ void Game::render() {
 }
 
 void Game::playSound() {
-
+    gameStateMachine->playSound();
 }
 
 void Game::endGame() {
 
     running = false;
+
+    gameStateMachine->popState();
+    gameStateMachine->popState();
+    gameStateMachine->popState();
+    gameStateMachine->popState();
+    gameStateMachine->popState();
 
     SDL_GL_DeleteContext(glContext);
     SDL_DestroyWindow(window);

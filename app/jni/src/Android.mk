@@ -14,7 +14,12 @@ LOCAL_C_INCLUDES += $(LOCAL_PATH)/../freetype/include/
 LOCAL_SRC_FILES :=      \
             main.cpp    \
             Game.cpp    \
-            InputHandler.cpp
+            EventHandler.cpp    \
+            PlayState.cpp   \
+            GameStateMachine.cpp    \
+            GameControlObject.cpp   \
+            GameObject.cpp  \
+            TextureManager.cpp
 
 LOCAL_SHARED_LIBRARIES := SDL2 SDL2_image SDL2_mixer freetype
 

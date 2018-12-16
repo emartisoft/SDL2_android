@@ -6,12 +6,13 @@
 #define SDL2_E_GAME_H
 
 #include "SDL.h"
+#include "GameStateMachine.h"
 
 class Game
 {
 public:
     void init();
-    void updateInputHandler();
+    void updateEventHandler();
 
     void update();
     void render();
@@ -41,6 +42,8 @@ private:
     SDL_DisplayMode DM;
     SDL_Window *window;
     SDL_GLContext glContext;
+
+    GameStateMachine* gameStateMachine;
 };
 
 

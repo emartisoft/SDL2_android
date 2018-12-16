@@ -2,10 +2,10 @@
 // Created by v on 09.12.2018.
 //
 
-#include "InputHandler.h"
+#include "EventHandler.h"
 #include "Game.h"
 
-InputHandler::InputHandler()
+EventHandler::EventHandler()
 {
     fingerEventKind.reserve(6);
 
@@ -17,12 +17,12 @@ InputHandler::InputHandler()
     fingerEventKind.push_back(false);
 }
 
-InputHandler::~InputHandler()
+EventHandler::~EventHandler()
 {
     fingerEventKind.clear();
 }
 
-void InputHandler::updateEvent()
+void EventHandler::updateEventHandler()
 {
     SDL_Event event;
 
@@ -36,7 +36,7 @@ void InputHandler::updateEvent()
             //Called on Android in onLowMemory()
             case SDL_APP_LOWMEMORY:
 
-                SDL_Log("InputHandler switch(event.type) : SDL_APP_LOWMEMORY");
+                SDL_Log("EventHandler switch(event.type) : SDL_APP_LOWMEMORY");
                 break;
 
             //Prepare for go to background. Can terminated without event.
@@ -46,7 +46,7 @@ void InputHandler::updateEvent()
             case SDL_APP_WILLENTERBACKGROUND:
                 //Game::instance()->endGame(); or save game
 
-                SDL_Log("InputHandler switch(event.type) : SDL_APP_WILLENTERBACKGROUND");
+                SDL_Log("EventHandler switch(event.type) : SDL_APP_WILLENTERBACKGROUND");
                 break;
 
             //already in background
@@ -54,7 +54,7 @@ void InputHandler::updateEvent()
             //Called on Android in onPause()
             case SDL_APP_DIDENTERBACKGROUND:
 
-                SDL_Log("InputHandler switch(event.type) : SDL_APP_DIDENTERBACKGROUND");
+                SDL_Log("EventHandler switch(event.type) : SDL_APP_DIDENTERBACKGROUND");
                 break;
 
             //prepare to appear in foreground
@@ -62,21 +62,21 @@ void InputHandler::updateEvent()
             //Called on Android in onResume()
             case SDL_APP_WILLENTERFOREGROUND:
 
-                SDL_Log("InputHandler switch(event.type) : SDL_APP_WILLENTERFOREGROUND");
+                SDL_Log("EventHandler switch(event.type) : SDL_APP_WILLENTERFOREGROUND");
                 break;
 
             //already in foreground
             //Called on iOS in applicationDidBecomeActive()
             //Called on Android in onResume()
             case SDL_APP_DIDENTERFOREGROUND:
-                SDL_Log("InputHandler switch(event.type) : SDL_APP_DIDENTERFOREGROUND");
+                SDL_Log("EventHandler switch(event.type) : SDL_APP_DIDENTERFOREGROUND");
 
                 break;
 // ENDMOBILE APP LIFECYCLE
 
             //close window
             case SDL_QUIT:
-                SDL_Log("InputHandler switch(event.type) : SDL_QUIT");
+                SDL_Log("EventHandler switch(event.type) : SDL_QUIT");
                 Game::instance()->endGame();
                 break;
 
@@ -84,19 +84,19 @@ void InputHandler::updateEvent()
             case SDL_KEYDOWN:
                 if(event.key.keysym.scancode == SDL_SCANCODE_AC_BACK)
                 {
-                    SDL_Log("InputHandler Application control keypad : SDL_SCANCODE_AC_BACK");
+                    SDL_Log("EventHandler Application control keypad : SDL_SCANCODE_AC_BACK");
                 }
 
-                SDL_Log("InputHandler switch(event.type) : SDL_KEYDOWN");
+                SDL_Log("EventHandler switch(event.type) : SDL_KEYDOWN");
                 break;
 
             case SDL_KEYUP:
                 if(event.key.keysym.scancode == SDL_SCANCODE_AC_BACK)
                 {
-                    SDL_Log("InputHandler Application control keypad : SDL_SCANCODE_AC_BACK");
+                    SDL_Log("EventHandler Application control keypad : SDL_SCANCODE_AC_BACK");
                 }
 
-                SDL_Log("InputHandler switch(event.type) : SDL_KEYUP");
+                SDL_Log("EventHandler switch(event.type) : SDL_KEYUP");
                 break;
 //END KEYS
 
@@ -117,7 +117,7 @@ void InputHandler::updateEvent()
                 fingerEventKind[FINGER_DOWN] = false;
                 fingerEventKind[FINGER_MOTION] = false;
 
-                if(SDL_GetTicks() < timeFingerDown + 300)
+                if(SDL_GetTicks() < timeFingerDown + timeFastTouch)
                 {
                     fingerEventKind[FINGER_DOWN_FAST_UP] = true;
                 }
@@ -134,12 +134,23 @@ void InputHandler::updateEvent()
                 break;
 //END TOUCH EVENT
 
+//SCREEN
+            case SDL_WINDOWEVENT :
+                if(SDL_GetDisplayOrientation(0) == SDL_ORIENTATION_LANDSCAPE )
+                {
+                    //SDL_Log("SDL_ORIENTATION_LANDSCAPE");
+                }
+
+                break;
+
+//END SCREEN
+
         }
     }
 
 }
 
-void InputHandler::resetFingerEvents() {
+void EventHandler::resetFingerEvents() {
 
     fingerEventKind[FINGER_DOWN] = false;
     fingerEventKind[FINGER_UP] = false;

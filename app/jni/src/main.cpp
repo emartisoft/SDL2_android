@@ -14,8 +14,6 @@ int main(int argc, char* argv[])
 
     Game::instance()->init();
 
-    int i = 0;
-
     while(Game::instance()->isRunning())
     {
         //SDL_Log("COUNT = %i", i++);
@@ -37,7 +35,7 @@ int main(int argc, char* argv[])
         frameStart = SDL_GetTicks();
 
         // need do before next iteration
-        Game::instance()->updateInputHandler(); // CAN close game in any state !!
+        Game::instance()->updateEventHandler(); // CAN close game in any state !!
 
     }
 
