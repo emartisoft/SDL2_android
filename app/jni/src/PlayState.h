@@ -10,6 +10,8 @@
 #include "GameObject.h"
 #include "GameControlObject.h"
 #include <vector>
+#include "GLES2/gl2.h"
+#include "GLES2/gl2ext.h"
 
 class PlayState : public GameState
 {
@@ -28,10 +30,12 @@ public:
     virtual const char* const getStateID() const { return playStateID;}
 
 private:
-    static constexpr char* const playStateID = "PLAY_STATE";
+    static const char* const playStateID;
 
     std::vector<GameControlObject*> gameControlObjects;
     std::vector<GameObject*> gameObjects;
+
+    GLuint shaderProgram;
 };
 
 #endif //SDL2_E_PLAYSTATE_H

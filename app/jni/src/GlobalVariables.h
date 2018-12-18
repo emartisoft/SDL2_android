@@ -7,13 +7,12 @@
 
 namespace GLOBAL_VARS
 {
-    char* FONT_PATH = nullptr;
-
-
-
-
-
+    //use this path for access fiel from APPLICATION directories
+    //e.g. : PATH_TO_APP_SOURCE/shaders/texture_shader.vert
+    extern char* PATH_TO_APP_SOURCE;
 }
+
+
 
 
 #endif //SDL2_E_GLOBALWARIABLES_H

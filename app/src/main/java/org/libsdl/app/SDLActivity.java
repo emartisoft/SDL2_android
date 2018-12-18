@@ -65,7 +65,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
     protected static final int SDL_ORIENTATION_PORTRAIT = 3;
     protected static final int SDL_ORIENTATION_PORTRAIT_FLIPPED = 4;
 
-    private String fontFilePath = "";
+    private String PATH_TO_APP_FILES_DIR = "";
 
     protected static int mCurrentOrientation;
 
@@ -173,7 +173,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
      * @return arguments for the native application.
      */
     protected String[] getArguments() {
-        return new String[]{fontFilePath};
+        return new String[]{PATH_TO_APP_FILES_DIR};
     }
 
     public static void initialize() {
@@ -197,15 +197,13 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
     }
 
     static private void copy(InputStream in, File dst) throws IOException {
-        FileOutputStream out = new FileOutputStream(dst);
-        byte[] buf = new byte[1024];
-        int len;
-
-        while ((len = in.read(buf)) > 0) {
-            out.write(buf,0, len);
-        }
-
+        int size = in.available();
+        byte[] buf = new byte[size];
+        in.read(buf);
         in.close();
+
+        FileOutputStream out = new FileOutputStream(dst);
+        out.write(buf);
         out.close();
     }
 
@@ -217,17 +215,20 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         Log.v(TAG, "onCreate()");
         super.onCreate(savedInstanceState);
 
-        // for font copy to APK
-        File font = new File(getFilesDir(), "Roboto-bold.ttf");
-        fontFilePath = font.getAbsolutePath();
-        if (!font.isFile()) {
+        PATH_TO_APP_FILES_DIR = getFilesDir().getAbsolutePath();
+
+        //copy to APK
+        File shader = new File(getFilesDir(), "texture.frag");
+        PATH_TO_APP_FILES_DIR = shader.getAbsolutePath();
+        if (!shader.exists()) {
             AssetManager assets = getResources().getAssets();
             try {
-                copy(assets.open("fonts/Roboto-bold.ttf"), font);
+                copy(getAssets().open("shaders/texture.vert"), shader);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
+
 
         // Load shared libraries
         String errorMsgBrokenLib = "";

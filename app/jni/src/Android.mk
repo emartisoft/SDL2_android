@@ -19,7 +19,8 @@ LOCAL_SRC_FILES :=      \
             GameStateMachine.cpp    \
             GameControlObject.cpp   \
             GameObject.cpp  \
-            TextureManager.cpp
+            TextureManager.cpp  \
+            ForShaders.cpp
 
 LOCAL_SHARED_LIBRARIES := SDL2 SDL2_image SDL2_mixer freetype
 

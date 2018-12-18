@@ -67,7 +67,7 @@ void GameStateMachine::update()
     // delete the state ONLY AFTER the program returned from ALL FUNCTIONS of this state !!!!!
     if(!gameStatesForDelete.empty())
     {
-        for(int i = gameStatesForDelete.size(); i > 0; i--)
+        for(long i = gameStatesForDelete.size(); i > 0; i--)
         {
             delete gameStatesForDelete.back();
             gameStatesForDelete.pop_back(); // reduce .size() on 1

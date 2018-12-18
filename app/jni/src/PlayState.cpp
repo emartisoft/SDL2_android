@@ -3,6 +3,10 @@
 //
 
 #include "PlayState.h"
+#include "TextureManager.h"
+#include "ForShaders.h"
+#include "GlobalVariables.h"
+#include <cstring>
 
 PlayState::PlayState()
 {
@@ -22,14 +26,32 @@ PlayState::~PlayState()
     }
 }
 
+const char* const PlayState::playStateID = "PLAY_STATE";
+
 bool PlayState::onEnter()
 {
+    int w,h =0;
+    TextureManager::instance()->load_PNG("images/portrait.png", "portrait", &w, &h);
+    SDL_Log("images/portrait.png W = %i, H = %i", w, h);
+
+    char rex[100];
+    strcpy(rex, GLOBAL_VARS::PATH_TO_APP_SOURCE);
+    strcat(rex, "/texture.vert");
+
+    char rex2[100];
+    strcpy(rex2, GLOBAL_VARS::PATH_TO_APP_SOURCE);
+    strcat(rex2, "/texture.frag");
+    //shaderProgram = ForShaders::makeProgram(GLOBAL_VARS::PATH_TO_APP_SOURCE, GLOBAL_VARS::PATH_TO_APP_SOURCE);
 
     return true;
 }
 
 bool PlayState::onExit()
 {
+    TextureManager::instance()->deleteFromTextureMap("portrait");
+
+    glDeleteProgram(shaderProgram);
+
     return true;
 }
 

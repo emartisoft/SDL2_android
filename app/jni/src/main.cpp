@@ -1,13 +1,21 @@
 #include "Game.h"
 #include "GlobalVariables.h"
-
+#include <ft2build.h>
+#include FT_FREETYPE_H
+#include "ForShaders.h"
 
 const int FPS = 60;
 const int TIME_FOR_1_LOOP = 1000 / FPS; //16,6 milisec ( 1000 milisec == 1 sec )
 
+char* GLOBAL_VARS::PATH_TO_APP_SOURCE;
+
 int main(int argc, char* argv[])
 {
-    GLOBAL_VARS::FONT_PATH = argv[1];
+    GLOBAL_VARS::PATH_TO_APP_SOURCE = argv[1];
+    SDL_Log("GLOBAL_VARS::PATH_TO_APP_SOURCE = %s", GLOBAL_VARS::PATH_TO_APP_SOURCE);
+
+    ForShaders::readShader(argv[1]);
+
 
     int frameStart = 0;
     int frameTime = 0;
@@ -39,7 +47,6 @@ int main(int argc, char* argv[])
 
     }
 
-    SDL_Log("GLOBAL_VARS::FONT_PATH = %s", GLOBAL_VARS::FONT_PATH);
     SDL_Delay(500);
 
     Game::instance()->endGame();
