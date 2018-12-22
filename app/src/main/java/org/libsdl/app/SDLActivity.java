@@ -27,7 +27,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.os.*;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.SparseArray;
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
@@ -196,16 +195,19 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         mCurrentNativeState = NativeState.INIT;
     }
 
-    static private void copy(InputStream in, File dst) throws IOException {
-        int size = in.available();
+    static private void copy(InputStream source, File dest) throws IOException {
+        int size = source.available();
         byte[] buf = new byte[size];
-        in.read(buf);
-        in.close();
+        source.read(buf);
+        source.close();
 
-        FileOutputStream out = new FileOutputStream(dst);
+        FileOutputStream out = new FileOutputStream(dest);
         out.write(buf);
         out.close();
     }
+
+    String namesDestination[] = {"qwe.f", "qwe.v","qwe2.f", "qwe2.v", "texture.frag", "texture.vert"};
+    File filesDestination[] = new File[namesDestination.length];
 
     // Setup
     @Override
@@ -213,22 +215,39 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         Log.v(TAG, "Device: " + Build.DEVICE);
         Log.v(TAG, "Model: " + Build.MODEL);
         Log.v(TAG, "onCreate()");
+        Log.v("getFilesDir", getFilesDir().toString());
         super.onCreate(savedInstanceState);
 
+        //path to local files storage in PHONE
         PATH_TO_APP_FILES_DIR = getFilesDir().getAbsolutePath();
 
-        //copy to APK
-        File shader = new File(getFilesDir(), "texture.frag");
-        PATH_TO_APP_FILES_DIR = shader.getAbsolutePath();
-        if (!shader.exists()) {
-            AssetManager assets = getResources().getAssets();
+        //copy SHADERS
+        try
+        {
+            String filesSource[] = getResources().getAssets().list("shaders");
+
+            for(int i = 0; i < namesDestination.length; i ++)
+            {
+                if(!filesSource[i].equals(namesDestination[i])) {throw new IOException("NO shader in folder");}
+
+                filesDestination[i] = new File(getFilesDir(), namesDestination[i]);
+                copy(getAssets().open("shaders/" + filesSource[i]), filesDestination[i]);
+            }
+        } catch (IOException e) {
+        throw new RuntimeException(e);
+        }
+
+        //copy FONTS
+        File fontDestination1 = new File(getFilesDir(), "FreeMono.ttf");
+        File fontDestination2 = new File(getFilesDir(), "Roboto-bold.ttf");
+        File fontDestination3 = new File(getFilesDir(), "Roboto-italic.ttf");
             try {
-                copy(getAssets().open("shaders/texture.vert"), shader);
+                copy(getAssets().open("fonts/FreeMono.ttf"), fontDestination1);
+                copy(getAssets().open("fonts/Roboto-bold.ttf"), fontDestination2);
+                copy(getAssets().open("fonts/Roboto-italic.ttf"), fontDestination3);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        }
-
 
         // Load shared libraries
         String errorMsgBrokenLib = "";

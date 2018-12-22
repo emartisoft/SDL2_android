@@ -34,15 +34,16 @@ bool PlayState::onEnter()
     TextureManager::instance()->load_PNG("images/portrait.png", "portrait", &w, &h);
     SDL_Log("images/portrait.png W = %i, H = %i", w, h);
 
-    char rex[100];
-    strcpy(rex, GLOBAL_VARS::PATH_TO_APP_SOURCE);
-    strcat(rex, "/texture.vert");
+    char vert[100];
+    strcpy(vert, GLOBAL_VARS::PATH_TO_APP_SOURCE);
+    strcat(vert, "/qwe.v");
 
-    char rex2[100];
-    strcpy(rex2, GLOBAL_VARS::PATH_TO_APP_SOURCE);
-    strcat(rex2, "/texture.frag");
-    //shaderProgram = ForShaders::makeProgram(GLOBAL_VARS::PATH_TO_APP_SOURCE, GLOBAL_VARS::PATH_TO_APP_SOURCE);
+    char fragm[100];
+    strcpy(fragm, GLOBAL_VARS::PATH_TO_APP_SOURCE);
+    strcat(fragm, "/qwe2.f");
+    shaderProgram = ForShaders::makeProgram(vert, fragm);
 
+    SDL_Log("shaderProgram = %i", shaderProgram);
     return true;
 }
 

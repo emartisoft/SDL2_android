@@ -1,7 +1,5 @@
 #include "Game.h"
 #include "GlobalVariables.h"
-#include <ft2build.h>
-#include FT_FREETYPE_H
 #include "ForShaders.h"
 
 const int FPS = 60;
@@ -14,8 +12,6 @@ int main(int argc, char* argv[])
     GLOBAL_VARS::PATH_TO_APP_SOURCE = argv[1];
     SDL_Log("GLOBAL_VARS::PATH_TO_APP_SOURCE = %s", GLOBAL_VARS::PATH_TO_APP_SOURCE);
 
-    ForShaders::readShader(argv[1]);
-
 
     int frameStart = 0;
     int frameTime = 0;
@@ -24,7 +20,6 @@ int main(int argc, char* argv[])
 
     while(Game::instance()->isRunning())
     {
-        //SDL_Log("COUNT = %i", i++);
 
         Game::instance()->update();
         Game::instance()->render();

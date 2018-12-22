@@ -15,7 +15,7 @@ public:
     ForShaders();
     ~ForShaders();
 
-    static const GLchar* readShader(const char* filename);
+    static const char* readShader(const char* filename);
 
     static GLuint makeProgram(const char* vertex, const char* fragment);
 };

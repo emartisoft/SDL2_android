@@ -4,6 +4,9 @@
 
 #include "ForShaders.h"
 #include "SDL.h"
+#include <cstring>
+#include <string>
+
 
 ForShaders::ForShaders()
 {
@@ -15,42 +18,36 @@ ForShaders::~ForShaders()
 
 }
 
-const GLchar* ForShaders::readShader(const char* filename)
+const char* ForShaders::readShader(const char* filename)
 {
-    SDL_Log("filename = %s", filename);
-
     FILE* infile = fopen(filename, "rb");
 
     if (!infile)
     {
-        SDL_Log("ForShaders::readShader unable to open file");
+        SDL_Log("ForShaders::readShader unable to open file :%s", filename);
         return NULL;
-    } else{
-        SDL_Log("ForShaders::readShader file was opened");
     }
 
     fseek(infile, 0, SEEK_END);
-    int len = ftell(infile);
+    long len = ftell(infile);
     fseek(infile, 0, SEEK_SET);
 
-    GLchar* source = new GLchar[len + 1];
+    char* source = new char[len + 1];
 
     fread(source, 1, len, infile);
     fclose(infile);
 
     source[len] = 0;
-    SDL_Log("source = %s", source);
+
     return const_cast<const GLchar*>(source);
 }
 
 GLuint ForShaders::makeProgram(const char* vertex, const char* fragment)
 {
     const char* vertexShaderCode = readShader(vertex);
+    SDL_Log("vertexShaderCode = %s", vertexShaderCode);
     const char* fragmentShaderCode = readShader(fragment);
-    //std::cout << vertexShaderCode << std::endl;
-    //std::cout << fragmentShaderCode << std::endl;
-
-    SDL_Log("STRING QWE + %i", strlen(fragmentShaderCode));
+    SDL_Log("fragmentShaderCode = %s", fragmentShaderCode);
 
     GLuint vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
     GLuint fragmentShaderID = glCreateShader(GL_FRAGMENT_SHADER);
@@ -64,15 +61,55 @@ GLuint ForShaders::makeProgram(const char* vertex, const char* fragment)
     delete[] fragmentShaderCode;
 
     glCompileShader(vertexShaderID);
+#ifdef _DEBUG
+    GLint compiled;
+	glGetShaderiv(vertexShaderID, GL_COMPILE_STATUS, &compiled); // проверка того что скомпилировалось
+	if (compiled == GL_FALSE) {
+		GLsizei len;
+		glGetShaderiv(vertexShaderID, GL_INFO_LOG_LENGTH, &len); // с - GL_INFO_LOG_LENGTH - вернет размер ошибки
+
+		GLchar* log = new GLchar[len + 1]; // для журнала к котором будет ошибка
+		glGetShaderInfoLog(vertexShaderID, len, &len, log); // заполнит журнал сообщением об ошибке
+		std::cout << "Vertex Shader compilation failed: " << log << std::endl;
+		delete[] log;
+	}
+	//else { std::cout << "Vertex Shader compiled " << std::endl; }
+#endif // DEBUG
 
     glCompileShader(fragmentShaderID);
+#ifdef _DEBUG
+    glGetShaderiv(fragmentShaderID, GL_COMPILE_STATUS, &compiled); // проверка того что скомпилировалось
+	if (compiled == GL_FALSE) {
+		GLsizei len;
+		glGetShaderiv(fragmentShaderID, GL_INFO_LOG_LENGTH, &len); // с - GL_INFO_LOG_LENGTH - вернет размер ошибки
+
+		GLchar* log = new GLchar[len + 1]; // для журнала к котором будет ошибка
+		glGetShaderInfoLog(fragmentShaderID, len, &len, log); // заполнит журнал сообщением об ошибке
+		std::cout << "Fragment Shader compilation failed: " << log << std::endl;
+		delete[] log;
+	}
+	//else { std::cout << "Fragment Shader compiled " << std::endl; }
+#endif // DEBUG
 
     GLuint programID = glCreateProgram();
     glAttachShader(programID, vertexShaderID);
     glAttachShader(programID, fragmentShaderID);
 
     glLinkProgram(programID);
+#ifdef _DEBUG
+    GLint linked;
+	glGetProgramiv(programID, GL_LINK_STATUS, &linked);
+	if (linked == GL_FALSE)
+	{
+		GLsizei len;
+		glGetProgramiv(programID, GL_INFO_LOG_LENGTH, &len);
 
+		GLchar* log = new GLchar[len + 1];
+		glGetProgramInfoLog(programID, len, &len, log);
+		std::cerr << "glLinkProgram(programID) failed: " << log << std::endl;
+		delete[] log;
+	}
+#endif // DEBUG
     glDetachShader(programID, vertexShaderID);
     glDetachShader(programID, fragmentShaderID);
 
