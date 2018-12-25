@@ -75,11 +75,11 @@ void GameStateMachine::update()
     }
 }
 
-void GameStateMachine::render()
+void GameStateMachine::draw()
 {
     if(!gameStates.empty())
     {
-        gameStates.back()->render();
+        gameStates.back()->draw();
     }
 }
 

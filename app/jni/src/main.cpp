@@ -11,8 +11,7 @@ int main(int argc, char* argv[])
 {
     GLOBAL_VARS::PATH_TO_APP_SOURCE = argv[1];
     SDL_Log("GLOBAL_VARS::PATH_TO_APP_SOURCE = %s", GLOBAL_VARS::PATH_TO_APP_SOURCE);
-
-
+    
     int frameStart = 0;
     int frameTime = 0;
 
@@ -22,7 +21,7 @@ int main(int argc, char* argv[])
     {
 
         Game::instance()->update();
-        Game::instance()->render();
+        Game::instance()->draw();
         Game::instance()->playSound();
 
         frameTime = SDL_GetTicks() - frameStart;

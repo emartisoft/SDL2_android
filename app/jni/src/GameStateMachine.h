@@ -20,7 +20,7 @@ public:
 
 
     void update();
-    void render();
+    void draw();
     void playSound();
 
 

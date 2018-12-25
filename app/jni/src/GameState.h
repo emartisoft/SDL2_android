@@ -14,7 +14,7 @@ public:
     virtual bool onEnter() = 0; // init state
 
     virtual void update() = 0;
-    virtual void render() = 0;
+    virtual void draw() = 0;
     virtual void playSound() = 0;
 
     virtual bool onExit() = 0; //clear state

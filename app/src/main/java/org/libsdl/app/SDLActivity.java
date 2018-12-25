@@ -206,7 +206,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         out.close();
     }
 
-    String namesDestination[] = {"qwe.f", "qwe.v","qwe2.f", "qwe2.v", "texture.frag", "texture.vert"};
+    String namesDestination[] = {"cube.frag", "cube.vert", "territory.frag", "territory.vert"};
     File filesDestination[] = new File[namesDestination.length];
 
     // Setup
@@ -215,11 +215,11 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         Log.v(TAG, "Device: " + Build.DEVICE);
         Log.v(TAG, "Model: " + Build.MODEL);
         Log.v(TAG, "onCreate()");
-        Log.v("getFilesDir", getFilesDir().toString());
         super.onCreate(savedInstanceState);
 
         //path to local files storage in PHONE
         PATH_TO_APP_FILES_DIR = getFilesDir().getAbsolutePath();
+        //Log.v("PATH_TO_APP_FILES_DIR", PATH_TO_APP_FILES_DIR);
 
         //copy SHADERS
         try
@@ -228,7 +228,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
 
             for(int i = 0; i < namesDestination.length; i ++)
             {
-                if(!filesSource[i].equals(namesDestination[i])) {throw new IOException("NO shader in folder");}
+                if(!filesSource[i].equals(namesDestination[i])) {throw new IOException("NO shader in folder OR bad sequence");}
 
                 filesDestination[i] = new File(getFilesDir(), namesDestination[i]);
                 copy(getAssets().open("shaders/" + filesSource[i]), filesDestination[i]);

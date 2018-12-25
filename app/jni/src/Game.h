@@ -15,7 +15,7 @@ public:
     void updateEventHandler();
 
     void update();
-    void render();
+    void draw();
     void playSound();
 
     void endGame();
@@ -35,7 +35,7 @@ private:
     Game();
     ~Game();
 
-    bool running ;
+    bool running;
     int screenWidth;
     int screenHeight;
 

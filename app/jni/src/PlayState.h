@@ -6,12 +6,9 @@
 #define SDL2_E_PLAYSTATE_H
 
 #include "GameState.h"
-#include "glm.hpp"
 #include "GameObject.h"
 #include "GameControlObject.h"
 #include <vector>
-#include "GLES2/gl2.h"
-#include "GLES2/gl2ext.h"
 
 class PlayState : public GameState
 {
@@ -22,7 +19,7 @@ public:
     virtual bool onEnter();
 
     virtual void update();
-    virtual void render();
+    virtual void draw();
     virtual void playSound();
 
     virtual bool onExit();
@@ -35,7 +32,6 @@ private:
     std::vector<GameControlObject*> gameControlObjects;
     std::vector<GameObject*> gameObjects;
 
-    GLuint shaderProgram;
 };
 
 #endif //SDL2_E_PLAYSTATE_H

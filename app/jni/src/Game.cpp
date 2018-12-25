@@ -84,7 +84,7 @@ void Game::init() {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 
-    glClearColor(0.2f, 0.9f, 0.2f, 1.0f); // background color after clear screen
+    glClearColor(0.2f, 0.2f, 0.2f, 1.0f); // background color after clear screen
 
     int ff;
     glGetIntegerv(GL_BLEND, &ff); // проверить что включено(ff станет = 1) а что нет(ff = 0)?
@@ -92,8 +92,8 @@ void Game::init() {
     glGetIntegerv(GL_DEPTH_TEST, &ff);
     SDL_Log( "GL_DEPTH_TEST = %i", ff );
 
-    SDL_GL_GetAttribute(SDL_GL_ACCELERATED_VISUAL, &ff);
-    SDL_Log( "SDL_GL_ACCELERATED_VISUAL = %i", ff );
+    SDL_GL_GetAttribute(SDL_GL_MULTISAMPLEBUFFERS, &ff);
+    SDL_Log( "SDL_GL_MULTISAMPLEBUFFERS = %i", ff );
 
     gameStateMachine = new GameStateMachine;
     gameStateMachine->pushState(new PlayState);
@@ -138,11 +138,11 @@ void Game::update() { //physics
     EventHandler::instance()->resetFingerEvents();
 }
 
-void Game::render() {
+void Game::draw() {
     //clear all possible buffers
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //	| GL_STENCIL_BUFFER_BIT | GL_ACCUM_BUFFER_BIT);
 
-    gameStateMachine->render(); // render new graphics in dependency of previously calculated physics
+    gameStateMachine->draw(); // draw new graphics in dependency of previously calculated physics
 
     //glFinish(); // waiting to finish drawing
     glFlush(); // NOT waiting to finish drawing

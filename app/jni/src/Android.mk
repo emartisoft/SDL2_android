@@ -18,9 +18,10 @@ LOCAL_SRC_FILES :=      \
             PlayState.cpp   \
             GameStateMachine.cpp    \
             GameControlObject.cpp   \
-            GameObject.cpp  \
             TextureManager.cpp  \
-            ForShaders.cpp
+            ForShaders.cpp  \
+            CubeExample.cpp \
+            TerritoryExample.cpp
 
 LOCAL_SHARED_LIBRARIES := SDL2 SDL2_image SDL2_mixer freetype
 

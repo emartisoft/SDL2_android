@@ -10,6 +10,16 @@
 //e.g. all object which interact with each other on scene
 class GameObject
 {
+public:
+    virtual ~GameObject() {}
+
+    virtual bool init() = 0; //allocate and prepare resource for this object
+
+    virtual void update() = 0;
+    virtual void draw() = 0;
+    virtual void playSound() = 0;
+
+    //free allocated resources in DESTRUCTOR
 
 };
 

@@ -4,8 +4,6 @@
 
 #include "ForShaders.h"
 #include "SDL.h"
-#include <cstring>
-#include <string>
 
 
 ForShaders::ForShaders()
@@ -61,7 +59,7 @@ GLuint ForShaders::makeProgram(const char* vertex, const char* fragment)
     delete[] fragmentShaderCode;
 
     glCompileShader(vertexShaderID);
-#ifdef _DEBUG
+#ifdef DEBUG
     GLint compiled;
 	glGetShaderiv(vertexShaderID, GL_COMPILE_STATUS, &compiled); // проверка того что скомпилировалось
 	if (compiled == GL_FALSE) {
@@ -77,7 +75,7 @@ GLuint ForShaders::makeProgram(const char* vertex, const char* fragment)
 #endif // DEBUG
 
     glCompileShader(fragmentShaderID);
-#ifdef _DEBUG
+#ifdef DEBUG
     glGetShaderiv(fragmentShaderID, GL_COMPILE_STATUS, &compiled); // проверка того что скомпилировалось
 	if (compiled == GL_FALSE) {
 		GLsizei len;
@@ -96,7 +94,7 @@ GLuint ForShaders::makeProgram(const char* vertex, const char* fragment)
     glAttachShader(programID, fragmentShaderID);
 
     glLinkProgram(programID);
-#ifdef _DEBUG
+#ifdef DEBUG
     GLint linked;
 	glGetProgramiv(programID, GL_LINK_STATUS, &linked);
 	if (linked == GL_FALSE)

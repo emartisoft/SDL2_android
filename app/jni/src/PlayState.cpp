@@ -3,10 +3,8 @@
 //
 
 #include "PlayState.h"
-#include "TextureManager.h"
-#include "ForShaders.h"
-#include "GlobalVariables.h"
-#include <cstring>
+#include "CubeExample.h"
+#include "TerritoryExample.h"
 
 PlayState::PlayState()
 {
@@ -30,45 +28,51 @@ const char* const PlayState::playStateID = "PLAY_STATE";
 
 bool PlayState::onEnter()
 {
-    int w,h =0;
-    TextureManager::instance()->load_PNG("images/portrait.png", "portrait", &w, &h);
-    SDL_Log("images/portrait.png W = %i, H = %i", w, h);
+    //gameControlObjects.push_back();
 
-    char vert[100];
-    strcpy(vert, GLOBAL_VARS::PATH_TO_APP_SOURCE);
-    strcat(vert, "/qwe.v");
+    for(int i = 0; i < gameControlObjects.size(); i++)
+    {
+        //gameControlObjects[i]->init();
+    }
 
-    char fragm[100];
-    strcpy(fragm, GLOBAL_VARS::PATH_TO_APP_SOURCE);
-    strcat(fragm, "/qwe2.f");
-    shaderProgram = ForShaders::makeProgram(vert, fragm);
+    gameObjects.push_back(new CubeExample);
+    gameObjects.push_back(new TerritoryExample);
 
-    SDL_Log("shaderProgram = %i", shaderProgram);
+    for(int i = 0; i < gameObjects.size(); i++)
+    {
+        if( ! gameObjects[i]->init()) return false;
+    }
+
     return true;
 }
 
 bool PlayState::onExit()
 {
-    TextureManager::instance()->deleteFromTextureMap("portrait");
-
-    glDeleteProgram(shaderProgram);
 
     return true;
 }
 
 void PlayState::update()
 {
+    float radius = 15.0f;
+    float camX = glm::sin(glm::radians((double)SDL_GetTicks() / 200)) * radius;
+    float camZ = glm::cos(glm::radians((double)SDL_GetTicks() / 200)) * radius;
+
+    //SDL_Log("SDL_GetTicks() / 1000 = %i",(SDL_GetTicks() / 1000));
+
+    Camera::instance()->setCameraPosition(glm::vec3(camX, 3.0f, camZ));
+
     for(int i = 0; i < gameControlObjects.size(); i++)
     {
         //gameControlObjects[i]->update();
     }
     for(int i = 0; i < gameObjects.size(); i++)
     {
-        //gameObjects[i]->update();
+        gameObjects[i]->update();
     }
 }
 
-void PlayState::render()
+void PlayState::draw()
 {
     for(int i = 0; i < gameControlObjects.size(); i++)
     {
@@ -76,7 +80,7 @@ void PlayState::render()
     }
     for(int i = 0; i < gameObjects.size(); i++)
     {
-        //gameObjects[i]->draw();
+        gameObjects[i]->draw();
     }
 }
 
@@ -88,7 +92,7 @@ void PlayState::playSound()
     }
     for(int i = 0; i < gameObjects.size(); i++)
     {
-        //gameObjects[i]->playSound();
+        gameObjects[i]->playSound();
     }
 }
 
