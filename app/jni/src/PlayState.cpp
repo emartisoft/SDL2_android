@@ -54,7 +54,7 @@ bool PlayState::onExit()
 
 void PlayState::update()
 {
-    float radius = 15.0f;
+    float radius = 10.0f;
     float camX = glm::sin(glm::radians((double)SDL_GetTicks() / 200)) * radius;
     float camZ = glm::cos(glm::radians((double)SDL_GetTicks() / 200)) * radius;
 

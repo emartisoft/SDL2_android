@@ -112,10 +112,8 @@ bool TerritoryExample::init()
     shaderProgramTerritory = ForShaders::makeProgram(vertexPath, fragmentPath);
     SDL_Log("shaderProgram = %i", shaderProgramTerritory);
 
-    matrModel = glm::mat4(1.0f);
-    perspectiveView = Camera::instance()->getView3D();
-    perspectiveProjection = Camera::instance()->getPerspective3D();
-    MVP = perspectiveProjection * perspectiveView * matrModel;
+
+    MVP = Camera::instance()->getCamera3D();
 
     SDL_Log("TerritoryExample::init()");
     return true;
@@ -123,10 +121,9 @@ bool TerritoryExample::init()
 
 void TerritoryExample::update()
 {
-    perspectiveView = Camera::instance()->getView3D();
-    perspectiveProjection = Camera::instance()->getPerspective3D();
 
-    MVP = perspectiveProjection * perspectiveView;
+
+    MVP = Camera::instance()->getCamera3D();
 }
 
 void TerritoryExample::draw()

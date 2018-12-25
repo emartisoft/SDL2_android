@@ -41,9 +41,9 @@ int main(int argc, char* argv[])
 
     }
 
-    SDL_Delay(500);
+    SDL_Delay(100);
 
-    Game::instance()->endGame();
+    //Game::instance()->endGame();
 
     return 0;
 }

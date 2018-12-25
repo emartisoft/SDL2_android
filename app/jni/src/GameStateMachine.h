@@ -23,6 +23,7 @@ public:
     void draw();
     void playSound();
 
+    int getStatesCount(){return gameStates.size();}
 
 private:
     std::vector<GameState*> gameStates;

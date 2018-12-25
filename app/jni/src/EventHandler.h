@@ -37,7 +37,7 @@ public:
     void updateEventHandler();
     void resetFingerEvents();
 
-    bool checkFingerEventKind(kind_finger_events kind)
+    bool checkFingerEvent(kind_finger_events kind)
     {
         return fingerEventKind[kind];
     }

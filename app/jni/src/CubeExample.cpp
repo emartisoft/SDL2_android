@@ -51,9 +51,12 @@ bool CubeExample::init()
     shaderProgramCube = ForShaders::makeProgram(vertexPath, fragmentPath);
     SDL_Log("shaderProgram = %i", shaderProgramCube);
 
-    matrModel = glm::mat4(1.0f);
-    perspectiveView = Camera::instance()->getView3D();
-    perspectiveProjection = Camera::instance()->getPerspective3D();
+    rotationMatrix = glm::mat4(1.0f);
+    translationMatrix = glm::mat4(1.0f);
+    scaleMatrix = glm::mat4(1.0f);
+    modelMatrix = scaleMatrix * rotationMatrix * translationMatrix;
+
+    MVP = Camera::instance()->getCamera3D() * modelMatrix;
 
 
     SDL_Log("CubeExample::init()");
@@ -62,11 +65,11 @@ bool CubeExample::init()
 
 void CubeExample::update()
 {
-    matrModel = glm::rotate(matrModel, glm::radians(1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-    perspectiveView = Camera::instance()->getView3D();
-    perspectiveProjection = Camera::instance()->getPerspective3D();
+    rotationMatrix = glm::rotate(rotationMatrix, glm::radians(1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+    translationMatrix = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 2.0f, 0.0));
+    modelMatrix = rotationMatrix * translationMatrix;
 
-    MVP = perspectiveProjection * perspectiveView * matrModel;
+    MVP = Camera::instance()->getCamera3D() * modelMatrix;
 }
 
 void CubeExample::draw()

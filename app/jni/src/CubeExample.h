@@ -26,9 +26,11 @@ private:
     GLuint vertexBuffer;
 
     glm::mat4 MVP;
-    glm::mat4 matrModel;
-    glm::mat4 perspectiveView;
-    glm::mat4 perspectiveProjection;
+
+    glm::mat4 modelMatrix;
+    glm::mat4 rotationMatrix;
+    glm::mat4 translationMatrix;
+    glm::mat4 scaleMatrix;
 
 };
 

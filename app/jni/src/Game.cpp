@@ -14,12 +14,13 @@ Game::Game() {
 
     SDL_Log("Game constructor");
 
-    running = true ;
+    running = true;
 }
 
 Game::~Game() {
     SDL_Log("Game destructor");
 
+    endGame();
 }
 
 void Game::init() {
@@ -39,7 +40,7 @@ void Game::init() {
         SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
         //SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1); // on antialiasing sdl
-        //SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4); //subsamples for each pixel
+        //SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 2); //subsamples for each pixel
 
         SDL_GetCurrentDisplayMode(0, &DM);
         screenWidth = DM.w;
@@ -97,6 +98,7 @@ void Game::init() {
 
     gameStateMachine = new GameStateMachine;
     gameStateMachine->pushState(new PlayState);
+
 }
 
 void Game::updateEventHandler() {
@@ -107,32 +109,33 @@ void Game::update() { //physics
 
     gameStateMachine->update();
 
-    if(EventHandler::instance()->checkFingerEventKind(FINGER_DOWN))
+    if(EventHandler::instance()->checkFingerEvent(FINGER_DOWN))
     {
         SDL_Log("EventHandler switch(event.type) : SDL_FINGER DOWN");
         glm::vec2 fingerPos =  EventHandler::instance()->getFingerDownPos();
         SDL_Log("Position x = %f, y = %f", fingerPos.x, fingerPos.y);
     }
 
-    if(EventHandler::instance()->checkFingerEventKind(FINGER_UP))
+    if(EventHandler::instance()->checkFingerEvent(FINGER_UP))
     {
         SDL_Log("EventHandler switch(event.type) : SDL_FINGER UP");
         glm::vec2 fingerPos =  EventHandler::instance()->getFingerUpPos();
         SDL_Log("Position x = %f, y = %f", fingerPos.x, fingerPos.y);
     }
 
-    if(EventHandler::instance()->checkFingerEventKind(FINGER_MOTION))
+    if(EventHandler::instance()->checkFingerEvent(FINGER_MOTION))
     {
         SDL_Log("EventHandler switch(event.type) : SDL_FINGER MOTION");
         glm::vec2 fingerPos =  EventHandler::instance()->getFingerMotionPos();
         SDL_Log("Position x = %f, y = %f", fingerPos.x, fingerPos.y);
     }
 
-    if(EventHandler::instance()->checkFingerEventKind(FINGER_DOWN_FAST_UP))
+    if(EventHandler::instance()->checkFingerEvent(FINGER_DOWN_FAST_UP))
     {
         SDL_Log("EventHandler switch(event.type) : FINGER_DOWN_FAST_UP");
         glm::vec2 fingerPos =  EventHandler::instance()->getFingerDownFastUpPos();
         SDL_Log("Position x = %f, y = %f", fingerPos.x, fingerPos.y);
+
     }
 
     EventHandler::instance()->resetFingerEvents();
@@ -157,11 +160,15 @@ void Game::endGame() {
 
     running = false;
 
-    gameStateMachine->popState();
-    gameStateMachine->popState();
-    gameStateMachine->popState();
-    gameStateMachine->popState();
-    gameStateMachine->popState();
+    int statesCount = gameStateMachine->getStatesCount();
+    SDL_Log("statesCount %i", statesCount);
+    for(int i = 0; i < statesCount; i++)
+    {
+        gameStateMachine->popState();
+    }
+    gameStateMachine->update();
+
+    delete gameStateMachine;
 
     SDL_GL_DeleteContext(glContext);
     SDL_DestroyWindow(window);
