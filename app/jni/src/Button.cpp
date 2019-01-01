@@ -59,6 +59,7 @@ bool Button::init(float x, float y, float z, float width, float height,
 
     soundClick = Mix_LoadWAV("sounds/menu1.wav");
 
+
     P = Camera::instance()->getCamera2D();
 
     return true;
