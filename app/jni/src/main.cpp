@@ -30,7 +30,7 @@ int main(int argc, char* argv[])
 
         if(frameTime < TIME_FOR_1_LOOP)
         {
-            SDL_Delay((int)(TIME_FOR_1_LOOP - frameTime));
+            SDL_Delay(TIME_FOR_1_LOOP - frameTime);
         }// loop end here !!! after sleep timeout
 
         //time loop calculating start HERE !!!!

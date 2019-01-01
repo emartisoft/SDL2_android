@@ -1,16 +1,16 @@
-#ifndef SDL2_E_PLAYSTATE_H
-#define SDL2_E_PLAYSTATE_H
+#ifndef SDL2_E_PAUSESTATE_H
+#define SDL2_E_PAUSESTATE_H
 
 #include "GameState.h"
 #include "GameObject.h"
 #include "GameControlObject.h"
 #include <vector>
 
-class PlayState : public GameState
+class PauseState : public GameState
 {
 public:
-    PlayState();
-    virtual ~PlayState();
+    PauseState();
+    virtual ~PauseState();
 
     virtual bool onEnter();
 
@@ -28,6 +28,8 @@ private:
     std::vector<GameControlObject*> gameControlObjects;
     std::vector<GameObject*> gameObjects;
 
+    static void pauseToPlay();
 };
 
-#endif //SDL2_E_PLAYSTATE_H
+
+#endif //SDL2_E_PAUSESTATE_H

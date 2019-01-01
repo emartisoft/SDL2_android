@@ -9,9 +9,15 @@ class Camera
 {
 
 public:
+
+    glm::mat4 getCamera2D()
+    {
+        return glm::ortho(0.0f, (float)Game::instance()->getScreenWidth(), 0.0f, (float)Game::instance()->getScreenHeight(), -1.0f, 1.0f);
+    }
+
     glm::mat4 getCamera3D()
     {
-        return swapAXIS * getPerspective3D() * getView3D();
+        return getPerspective3D() * getView3D();
     }
 
     glm::mat4 getView3D()

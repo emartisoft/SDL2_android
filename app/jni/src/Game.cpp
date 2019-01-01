@@ -1,14 +1,9 @@
-//
-// Created by v on 06.12.2018.
-//
-
 #include "Game.h"
-#include <GLES2/gl2.h>
-#include <GLES2/gl2ext.h>
 #include "SDL_mixer.h"
 #include "EventHandler.h"
 #include "glm.hpp"
 #include "PlayState.h"
+#include "MainMenuState.h"
 
 Game::Game() {
 
@@ -62,6 +57,8 @@ void Game::init() {
             SDL_Log("window created");
         }
 
+        SDL_SetWindowFullscreen(window, SDL_WINDOW_FULLSCREEN);
+
         glContext = SDL_GL_CreateContext(window);
 
         SDL_Log("GL_VERSION = %s", glGetString(GL_VERSION));
@@ -72,7 +69,7 @@ void Game::init() {
         return;
     }
 
-    if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 4069) == -1)
+    if (Mix_OpenAudio(MIX_DEFAULT_FREQUENCY, MIX_DEFAULT_FORMAT, MIX_DEFAULT_CHANNELS, 1024) == -1)
     {
         SDL_Log( "SDL mixer init error" );
         return;
@@ -88,7 +85,7 @@ void Game::init() {
     glClearColor(0.2f, 0.2f, 0.2f, 1.0f); // background color after clear screen
 
     int ff;
-    glGetIntegerv(GL_BLEND, &ff); // проверить что включено(ff станет = 1) а что нет(ff = 0)?
+    glGetIntegerv(GL_BLEND, &ff); // проверить что включено(ff станет = 1) а что нет(ff = 0)
     SDL_Log( "GL_BLEND = %i", ff );
     glGetIntegerv(GL_DEPTH_TEST, &ff);
     SDL_Log( "GL_DEPTH_TEST = %i", ff );
@@ -97,7 +94,7 @@ void Game::init() {
     SDL_Log( "SDL_GL_MULTISAMPLEBUFFERS = %i", ff );
 
     gameStateMachine = new GameStateMachine;
-    gameStateMachine->pushState(new PlayState);
+    gameStateMachine->pushState(new MainMenuState);
 
 }
 
@@ -111,31 +108,9 @@ void Game::update() { //physics
 
     if(EventHandler::instance()->checkFingerEvent(FINGER_DOWN))
     {
-        SDL_Log("EventHandler switch(event.type) : SDL_FINGER DOWN");
+        SDL_Log("EventHandler switch(event.type) : SDL_FINGER_DOWN");
         glm::vec2 fingerPos =  EventHandler::instance()->getFingerDownPos();
         SDL_Log("Position x = %f, y = %f", fingerPos.x, fingerPos.y);
-    }
-
-    if(EventHandler::instance()->checkFingerEvent(FINGER_UP))
-    {
-        SDL_Log("EventHandler switch(event.type) : SDL_FINGER UP");
-        glm::vec2 fingerPos =  EventHandler::instance()->getFingerUpPos();
-        SDL_Log("Position x = %f, y = %f", fingerPos.x, fingerPos.y);
-    }
-
-    if(EventHandler::instance()->checkFingerEvent(FINGER_MOTION))
-    {
-        SDL_Log("EventHandler switch(event.type) : SDL_FINGER MOTION");
-        glm::vec2 fingerPos =  EventHandler::instance()->getFingerMotionPos();
-        SDL_Log("Position x = %f, y = %f", fingerPos.x, fingerPos.y);
-    }
-
-    if(EventHandler::instance()->checkFingerEvent(FINGER_DOWN_FAST_UP))
-    {
-        SDL_Log("EventHandler switch(event.type) : FINGER_DOWN_FAST_UP");
-        glm::vec2 fingerPos =  EventHandler::instance()->getFingerDownFastUpPos();
-        SDL_Log("Position x = %f, y = %f", fingerPos.x, fingerPos.y);
-
     }
 
     EventHandler::instance()->resetFingerEvents();

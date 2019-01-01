@@ -1,9 +1,7 @@
-//
-// Created by v on 09.12.2018.
-//
-
 #include "EventHandler.h"
 #include "Game.h"
+#include "PauseState.h"
+#include <string.h>
 
 EventHandler::EventHandler()
 {
@@ -15,6 +13,8 @@ EventHandler::EventHandler()
     fingerEventKind.push_back(false);
     fingerEventKind.push_back(false);
     fingerEventKind.push_back(false);
+
+    currentOrientation = SDL_GetDisplayOrientation(0);
 }
 
 EventHandler::~EventHandler()
@@ -44,7 +44,10 @@ void EventHandler::updateEventHandler()
             // Called on iOS in applicationWillResignActive()
             // Called on Android in onPause()
             case SDL_APP_WILLENTERBACKGROUND:
-                //Game::instance()->endGame(); or save game
+                if(strcmp(Game::instance()->getStateMachine()->getStateID(), "PLAY_STATE") == 0)
+                {
+                    Game::instance()->getStateMachine()->pushState(new PauseState);
+                }
 
                 SDL_Log("EventHandler switch(event.type) : SDL_APP_WILLENTERBACKGROUND");
                 break;
@@ -77,7 +80,7 @@ void EventHandler::updateEventHandler()
             //close window
             case SDL_QUIT:
                 SDL_Log("EventHandler switch(event.type) : SDL_QUIT");
-                Game::instance()->endGame();
+
                 break;
 
 //KEYS
@@ -108,7 +111,8 @@ void EventHandler::updateEventHandler()
                 timeFingerDown = SDL_GetTicks();
 
                 fingerDownPos.x = event.tfinger.x * Game::instance()->getScreenWidth();
-                fingerDownPos.y = event.tfinger.y * Game::instance()->getScreenHeight();
+                //for landscape orientation invert Y
+                fingerDownPos.y = Game::instance()->getScreenHeight() - (event.tfinger.y * Game::instance()->getScreenHeight());
 
                 break;
 
@@ -123,35 +127,44 @@ void EventHandler::updateEventHandler()
                 }
 
                 fingerUpPos.x = event.tfinger.x * Game::instance()->getScreenWidth();
-                fingerUpPos.y = event.tfinger.y * Game::instance()->getScreenHeight();
+                //for landscape orientation invert Y
+                fingerUpPos.y = Game::instance()->getScreenHeight() - (event.tfinger.y * Game::instance()->getScreenHeight());
                 break;
 
             case SDL_FINGERMOTION:
                 fingerEventKind[FINGER_MOTION] = true;
 
                 fingerMotionPos.x = event.tfinger.x * Game::instance()->getScreenWidth();
-                fingerMotionPos.y = event.tfinger.y * Game::instance()->getScreenHeight();
+                //for landscape orientation invert Y
+                fingerMotionPos.y = Game::instance()->getScreenHeight() - (event.tfinger.y * Game::instance()->getScreenHeight());
                 break;
 //END TOUCH EVENT
 
 //SCREEN
             case SDL_WINDOWEVENT :
-                if(SDL_GetDisplayOrientation(0) == SDL_ORIENTATION_LANDSCAPE )
+                if(SDL_GetDisplayOrientation(0) != currentOrientation)
                 {
-                    //SDL_Log("SDL_ORIENTATION_LANDSCAPE");
+                    SDL_Log("RECREATE WINDOW");
+
+                    Game::instance()->reCreateWindow();
+
+                    currentOrientation = SDL_GetDisplayOrientation(0);
                 }
+
 
                 break;
 
 //END SCREEN
 
+            default:
+                break;
         }
     }
 
 }
 
-void EventHandler::resetFingerEvents() {
-
+void EventHandler::resetFingerEvents()
+{
     fingerEventKind[FINGER_DOWN] = false;
     fingerEventKind[FINGER_UP] = false;
     fingerEventKind[FINGER_MOTION] = false;

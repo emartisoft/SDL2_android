@@ -1,7 +1,3 @@
-//
-// Created by v on 12.12.2018.
-//
-
 #ifndef SDL2_E_GAMESTATEMACHINE_H
 #define SDL2_E_GAMESTATEMACHINE_H
 
@@ -24,6 +20,12 @@ public:
     void playSound();
 
     int getStatesCount(){return gameStates.size();}
+
+    const char* getStateID()
+    {
+        if(!gameStates.empty()) return gameStates.back()->getStateID();
+         else return "";
+    }
 
 private:
     std::vector<GameState*> gameStates;

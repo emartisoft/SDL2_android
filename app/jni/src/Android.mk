@@ -17,11 +17,13 @@ LOCAL_SRC_FILES :=      \
             EventHandler.cpp    \
             PlayState.cpp   \
             GameStateMachine.cpp    \
-            GameControlObject.cpp   \
             TextureManager.cpp  \
             ForShaders.cpp  \
             CubeExample.cpp \
-            TerritoryExample.cpp
+            TerritoryExample.cpp    \
+            Button.cpp  \
+            MainMenuState.cpp   \
+            PauseState.cpp
 
 LOCAL_SHARED_LIBRARIES := SDL2 SDL2_image SDL2_mixer freetype
 

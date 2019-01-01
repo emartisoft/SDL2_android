@@ -1,7 +1,3 @@
-//
-// Created by v on 12.12.2018.
-//
-
 #ifndef SDL2_E_GAMESTATE_H
 #define SDL2_E_GAMESTATE_H
 

@@ -1,7 +1,3 @@
-//
-// Created by v on 09.12.2018.
-//
-
 #ifndef SDL2_E_INPUTHANDLER_H
 #define SDL2_E_INPUTHANDLER_H
 
@@ -46,15 +42,16 @@ private:
     EventHandler();
     ~EventHandler();
 
-    glm::ivec2 fingerDownPos;
-    glm::ivec2 fingerUpPos;
-    glm::ivec2 fingerMotionPos;
+    glm::vec2 fingerDownPos;
+    glm::vec2 fingerUpPos;
+    glm::vec2 fingerMotionPos;
 
     std::vector<bool> fingerEventKind;
 
     unsigned int timeFingerDown;
     unsigned int timeFastTouch = 300; //milisec
 
+    SDL_DisplayOrientation currentOrientation;
 };
 
 #endif //SDL2_E_INPUTHANDLER_H
