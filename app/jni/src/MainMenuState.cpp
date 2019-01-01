@@ -1,17 +1,15 @@
-//
-// Created by v on 12.12.2018.
-//
-
+#include "MainMenuState.h"
+#include "Button.h"
+#include "Game.h"
 #include "PlayState.h"
-#include "CubeExample.h"
-#include "TerritoryExample.h"
 
-PlayState::PlayState()
+
+MainMenuState::MainMenuState()
 {
 
 }
 
-PlayState::~PlayState()
+MainMenuState::~MainMenuState()
 {
     for(int i = 0; i < gameControlObjects.size(); i++)
     {
@@ -24,38 +22,32 @@ PlayState::~PlayState()
     }
 }
 
-const char* const PlayState::playStateID = "PLAY_STATE";
+const char* const MainMenuState::playStateID = "MAIN_MENU_STATE";
 
-bool PlayState::onEnter()
+bool MainMenuState::onEnter()
 {
+    int screenW = Game::instance()->getScreenWidth();
+    int screenH = Game::instance()->getScreenHeight();
 
-    gameObjects.push_back(new CubeExample);
-    gameObjects.push_back(new TerritoryExample);
+    SDL_Log("screenW = %i   screenH = %i", screenW, screenH);
 
-    for(int i = 0; i < gameObjects.size(); i++)
-    {
-        if( ! gameObjects[i]->init()) return false;
-    }
+    Button* buttonPlay = new Button;
+    buttonPlay->init(1050, 70, 0.9, 400, 200, "play1.png", "play2.png");
+    buttonPlay->setCallback(mainMenuToPlay);
+    gameControlObjects.push_back(buttonPlay);
 
     return true;
 }
 
-bool PlayState::onExit()
+bool MainMenuState::onExit()
 {
+
 
     return true;
 }
 
-void PlayState::update()
+void MainMenuState::update()
 {
-    float radius = 10.0f;
-    float camX = glm::sin(glm::radians((double)SDL_GetTicks() / 200)) * radius;
-    float camZ = glm::cos(glm::radians((double)SDL_GetTicks() / 200)) * radius;
-
-    //SDL_Log("SDL_GetTicks() / 1000 = %i",(SDL_GetTicks() / 1000));
-
-    Camera::instance()->setCameraPosition(glm::vec3(camX, 3.0f, camZ));
-
     for(int i = 0; i < gameControlObjects.size(); i++)
     {
         gameControlObjects[i]->update();
@@ -66,7 +58,7 @@ void PlayState::update()
     }
 }
 
-void PlayState::draw()
+void MainMenuState::draw()
 {
     for(int i = 0; i < gameControlObjects.size(); i++)
     {
@@ -78,7 +70,7 @@ void PlayState::draw()
     }
 }
 
-void PlayState::playSound()
+void MainMenuState::playSound()
 {
     for(int i = 0; i < gameControlObjects.size(); i++)
     {
@@ -90,3 +82,8 @@ void PlayState::playSound()
     }
 }
 
+
+void MainMenuState::mainMenuToPlay()
+{
+    Game::instance()->getStateMachine()->changeState(new PlayState);
+}

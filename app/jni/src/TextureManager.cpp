@@ -1,7 +1,3 @@
-//
-// Created by v on 16.12.2018.
-//
-
 #include "TextureManager.h"
 
 TextureManager::TextureManager()
@@ -18,11 +14,11 @@ TextureManager::~TextureManager()
     textureMap.clear();
 }
 
-bool TextureManager::load_PNG(const char* imagePath, const char* imageID, int* w, int* h)
+bool TextureManager::load_PNG(std::string imagePath, const char* imageID, int* w, int* h)
 {
     if (textureMap.find(imageID) != textureMap.end()) return true; // exist
 
-    SDL_Surface* surface = IMG_Load(imagePath);
+    SDL_Surface* surface = IMG_Load(imagePath.c_str());
     if( surface == NULL )
     {
         SDL_Log( "SDL PNG load Error: %s", IMG_GetError());

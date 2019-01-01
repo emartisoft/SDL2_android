@@ -1,16 +1,16 @@
-#ifndef SDL2_E_PLAYSTATE_H
-#define SDL2_E_PLAYSTATE_H
+#ifndef SDL2_E_MAINMENUSTATE_H
+#define SDL2_E_MAINMENUSTATE_H
 
 #include "GameState.h"
 #include "GameObject.h"
 #include "GameControlObject.h"
 #include <vector>
 
-class PlayState : public GameState
+class MainMenuState : public GameState
 {
 public:
-    PlayState();
-    virtual ~PlayState();
+    MainMenuState();
+    virtual ~MainMenuState();
 
     virtual bool onEnter();
 
@@ -28,6 +28,8 @@ private:
     std::vector<GameControlObject*> gameControlObjects;
     std::vector<GameObject*> gameObjects;
 
+    static void mainMenuToPlay();
 };
 
-#endif //SDL2_E_PLAYSTATE_H
+
+#endif //SDL2_E_MAINMENUSTATE_H

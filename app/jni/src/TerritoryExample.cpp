@@ -65,7 +65,6 @@ bool TerritoryExample::init()
     }
     SDL_Log("count = %i", count);
 
-
     glGenBuffers(1, &vertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 1800, vertices, GL_STATIC_DRAW);
@@ -93,6 +92,7 @@ bool TerritoryExample::init()
         Z1 = Z1 - 1;
         Z2 = Z2 - 1;
     }
+
     glGenBuffers(1, &vertexBuffer2);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer2);
     glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 90, vertices2, GL_STATIC_DRAW);
@@ -100,16 +100,7 @@ bool TerritoryExample::init()
 
     delete[] vertices2;
 
-
-    char vertexPath[200];
-    strcpy(vertexPath, GLOBAL_VARS::PATH_TO_APP_SOURCE);
-    strcat(vertexPath, "/territory.vert");
-
-    char fragmentPath[200];
-    strcpy(fragmentPath, GLOBAL_VARS::PATH_TO_APP_SOURCE);
-    strcat(fragmentPath, "/territory.frag");
-
-    shaderProgramTerritory = ForShaders::makeProgram(vertexPath, fragmentPath);
+    shaderProgramTerritory = ForShaders::makeProgram("/territory.vert", "/territory.frag");
     SDL_Log("shaderProgram = %i", shaderProgramTerritory);
 
 
@@ -131,6 +122,7 @@ void TerritoryExample::draw()
     glLineWidth(5);
 
     glUseProgram(shaderProgramTerritory);
+
     // 1 draw
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
     glEnableVertexAttribArray(0);

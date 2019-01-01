@@ -37,18 +37,10 @@ bool CubeExample::init()
 
     glGenBuffers(1, &vertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 36, vertices, GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    char vertexPath[200];
-    strcpy(vertexPath, GLOBAL_VARS::PATH_TO_APP_SOURCE);
-    strcat(vertexPath, "/cube.vert");
-
-    char fragmentPath[200];
-    strcpy(fragmentPath, GLOBAL_VARS::PATH_TO_APP_SOURCE);
-    strcat(fragmentPath, "/cube.frag");
-
-    shaderProgramCube = ForShaders::makeProgram(vertexPath, fragmentPath);
+    shaderProgramCube = ForShaders::makeProgram("/cube.vert", "/cube.frag");
     SDL_Log("shaderProgram = %i", shaderProgramCube);
 
     rotationMatrix = glm::mat4(1.0f);

@@ -1,14 +1,16 @@
-attribute vec4 vPosition;
+precision mediump float;
+
+attribute vec4 inPosition;
 attribute vec4 inColor;
 
 uniform mat4 MVP_matrix;
 
-varying vec4 fragColor;
+varying vec4 color;
 
 void main()
 {
-    fragColor = inColor;
+    color = inColor;
 
-	gl_Position = MVP_matrix * vPosition;
+	gl_Position = MVP_matrix * inPosition;
 
 }

@@ -206,7 +206,7 @@ public class SDLActivity extends Activity implements View.OnSystemUiVisibilityCh
         out.close();
     }
 
-    String namesDestination[] = {"cube.frag", "cube.vert", "territory.frag", "territory.vert"};
+    String namesDestination[] = {"button.frag", "button.vert", "cube.frag", "cube.vert", "territory.frag", "territory.vert"};
     File filesDestination[] = new File[namesDestination.length];
 
     // Setup

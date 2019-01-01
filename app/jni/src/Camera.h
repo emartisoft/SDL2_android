@@ -9,9 +9,10 @@ class Camera
 {
 
 public:
+
     glm::mat4 getCamera3D()
     {
-        return swapAXIS * getPerspective3D() * getView3D();
+        return getPerspective3D() * getView3D();
     }
 
     glm::mat4 getView3D()

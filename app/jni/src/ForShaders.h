@@ -1,7 +1,3 @@
-//
-// Created by v on 17.12.2018.
-//
-
 #ifndef SDL2_E_FORSHADERS_H
 #define SDL2_E_FORSHADERS_H
 

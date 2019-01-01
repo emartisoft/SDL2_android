@@ -1,9 +1,7 @@
-//
-// Created by v on 17.12.2018.
-//
-
 #include "ForShaders.h"
 #include "SDL.h"
+#include "GlobalVariables.h"
+#include <cstring>
 
 
 ForShaders::ForShaders()
@@ -40,11 +38,19 @@ const char* ForShaders::readShader(const char* filename)
     return const_cast<const GLchar*>(source);
 }
 
-GLuint ForShaders::makeProgram(const char* vertex, const char* fragment)
+GLuint ForShaders::makeProgram(const char* vertexName, const char* fragmentName)
 {
-    const char* vertexShaderCode = readShader(vertex);
+    char vertexPath[200];
+    strcpy(vertexPath, GLOBAL_VARS::PATH_TO_APP_SOURCE);
+    strcat(vertexPath, vertexName);
+
+    char fragmentPath[200];
+    strcpy(fragmentPath, GLOBAL_VARS::PATH_TO_APP_SOURCE);
+    strcat(fragmentPath, fragmentName);
+
+    const char* vertexShaderCode = readShader(vertexPath);
     SDL_Log("vertexShaderCode = %s", vertexShaderCode);
-    const char* fragmentShaderCode = readShader(fragment);
+    const char* fragmentShaderCode = readShader(fragmentPath);
     SDL_Log("fragmentShaderCode = %s", fragmentShaderCode);
 
     GLuint vertexShaderID = glCreateShader(GL_VERTEX_SHADER);
