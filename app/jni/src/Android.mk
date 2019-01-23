@@ -23,7 +23,8 @@ LOCAL_SRC_FILES :=      \
             TerritoryExample.cpp    \
             Button.cpp  \
             MainMenuState.cpp   \
-            PauseState.cpp
+            PauseState.cpp  \
+            Background.cpp  \
 
 LOCAL_SHARED_LIBRARIES := SDL2 SDL2_image SDL2_mixer freetype
 

@@ -30,14 +30,10 @@ void GameStateMachine::changeState(GameState* state) // == POP old state + PUSH 
         {
             return; // if new state == current state exit from method and not change state
         }
-        if(gameStates.back()->onExit())
-        {
-            gameStatesForDelete.push_back(gameStates.back());
-            gameStates.pop_back();
 
-            gameStates.push_back(state);
-            gameStates.back()->onEnter();
-        }
+        popState();
+
+        pushState(state);
     }
 }
 
@@ -45,11 +41,9 @@ void GameStateMachine::popState()
 {
     if(!gameStates.empty())
     {
-        if(gameStates.back()->onExit())
-        {
-            gameStatesForDelete.push_back(gameStates.back());
-            gameStates.pop_back();
-        }
+        gameStates.back()->onExit();
+        gameStatesForDelete.push_back(gameStates.back());
+        gameStates.pop_back();
     }
 }
 

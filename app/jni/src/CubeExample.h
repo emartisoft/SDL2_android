@@ -8,13 +8,13 @@
 #include "glm.hpp"
 #include "Camera.h"
 
-class CubeExample : public GameObject // TRIANGLE EXAMPLE
+class CubeExample : public GameObject
 {
 public:
     CubeExample();
     virtual ~CubeExample();
 
-    virtual bool init();
+    bool init();
 
     virtual void update();
     virtual void draw();

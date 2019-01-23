@@ -9,11 +9,6 @@ PauseState::PauseState()
 
 PauseState::~PauseState()
 {
-    for(int i = 0; i < gameControlObjects.size(); i++)
-    {
-        if(gameControlObjects[i] != nullptr) delete gameControlObjects[i];
-    }
-
     for(int i = 0; i < gameObjects.size(); i++)
     {
         if(gameObjects[i] != nullptr) delete gameObjects[i];
@@ -22,7 +17,7 @@ PauseState::~PauseState()
 
 const char* const PauseState::playStateID = "PAUSE_STATE";
 
-bool PauseState::onEnter()
+void PauseState::onEnter()
 {
     int screenW = Game::instance()->getScreenWidth();
     int screenH = Game::instance()->getScreenHeight();
@@ -32,24 +27,19 @@ bool PauseState::onEnter()
     Button* buttonPlay = new Button;
     buttonPlay->init(380, 550, 0.9, 400, 200, "resume1.png", "resume2.png");
     buttonPlay->setCallback(pauseToPlay);
-    gameControlObjects.push_back(buttonPlay);
+    gameObjects.push_back(buttonPlay);
 
-    return true;
 }
 
-bool PauseState::onExit()
+void PauseState::onExit()
 {
 
 
-    return true;
+
 }
 
 void PauseState::update()
 {
-    for(int i = 0; i < gameControlObjects.size(); i++)
-    {
-        gameControlObjects[i]->update();
-    }
     for(int i = 0; i < gameObjects.size(); i++)
     {
         gameObjects[i]->update();
@@ -58,10 +48,6 @@ void PauseState::update()
 
 void PauseState::draw()
 {
-    for(int i = 0; i < gameControlObjects.size(); i++)
-    {
-        gameControlObjects[i]->draw();
-    }
     for(int i = 0; i < gameObjects.size(); i++)
     {
         gameObjects[i]->draw();
@@ -70,10 +56,6 @@ void PauseState::draw()
 
 void PauseState::playSound()
 {
-    for(int i = 0; i < gameControlObjects.size(); i++)
-    {
-        gameControlObjects[i]->playSound();
-    }
     for(int i = 0; i < gameObjects.size(); i++)
     {
         gameObjects[i]->playSound();

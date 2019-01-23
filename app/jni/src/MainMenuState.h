@@ -3,8 +3,8 @@
 
 #include "GameState.h"
 #include "GameObject.h"
-#include "GameControlObject.h"
 #include <vector>
+#include <mutex>
 
 class MainMenuState : public GameState
 {
@@ -12,23 +12,24 @@ public:
     MainMenuState();
     virtual ~MainMenuState();
 
-    virtual bool onEnter();
+    virtual void onEnter();
 
     virtual void update();
     virtual void draw();
     virtual void playSound();
 
-    virtual bool onExit();
+    virtual void onExit();
 
     virtual const char* const getStateID() const { return playStateID;}
+
+    std::vector<GameObject*> gameObjects;
+
+    static void mainMenuToPlay();
 
 private:
     static const char* const playStateID;
 
-    std::vector<GameControlObject*> gameControlObjects;
-    std::vector<GameObject*> gameObjects;
-
-    static void mainMenuToPlay();
+    std::mutex mutexObject;
 };
 
 

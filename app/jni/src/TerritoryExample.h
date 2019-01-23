@@ -12,7 +12,7 @@ public:
     TerritoryExample();
     virtual ~TerritoryExample();
 
-    virtual bool init();
+    bool init();
 
     virtual void update();
     virtual void draw();

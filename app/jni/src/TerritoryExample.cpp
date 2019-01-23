@@ -113,7 +113,6 @@ bool TerritoryExample::init()
 void TerritoryExample::update()
 {
 
-
     MVP = Camera::instance()->getCamera3D();
 }
 

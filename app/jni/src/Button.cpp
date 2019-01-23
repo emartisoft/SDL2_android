@@ -1,7 +1,6 @@
 #include "Button.h"
 #include "TextureManager.h"
 #include "EventHandler.h"
-#include "GlobalVariables.h"
 #include "ForShaders.h"
 #include "gtc/type_ptr.hpp"
 #include "Camera.h"
@@ -50,7 +49,6 @@ bool Button::init(float x, float y, float z, float width, float height,
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     shaderProgramButton = ForShaders::makeProgram("/button.vert", "/button.frag");
-    SDL_Log("shaderProgram = %i", shaderProgramButton);
 
     textureID1 = textureName1;
     textureID2 = textureName2;
@@ -58,7 +56,6 @@ bool Button::init(float x, float y, float z, float width, float height,
     TextureManager::instance()->load_PNG(std::string("images/").append(textureName2), textureID2);
 
     soundClick = Mix_LoadWAV("sounds/menu1.wav");
-
 
     P = Camera::instance()->getCamera2D();
 
@@ -93,7 +90,7 @@ void Button::update()
         buttonClicked = false;
     }
 
-    //P = Camera::instance()->getCamera2D();
+    P = Camera::instance()->getCamera2D();
 }
 
 void Button::draw()

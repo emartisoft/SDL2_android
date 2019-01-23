@@ -1,7 +1,3 @@
-//
-// Created by v on 12.12.2018.
-//
-
 #include "PlayState.h"
 #include "CubeExample.h"
 #include "TerritoryExample.h"
@@ -13,10 +9,6 @@ PlayState::PlayState()
 
 PlayState::~PlayState()
 {
-    for(int i = 0; i < gameControlObjects.size(); i++)
-    {
-        if(gameControlObjects[i] != nullptr) delete gameControlObjects[i];
-    }
 
     for(int i = 0; i < gameObjects.size(); i++)
     {
@@ -26,24 +18,22 @@ PlayState::~PlayState()
 
 const char* const PlayState::playStateID = "PLAY_STATE";
 
-bool PlayState::onEnter()
+void PlayState::onEnter()
 {
+    CubeExample* cubeExample = new CubeExample;
+    cubeExample->init();
+    gameObjects.push_back(cubeExample);
 
-    gameObjects.push_back(new CubeExample);
-    gameObjects.push_back(new TerritoryExample);
+    TerritoryExample* territoryExample = new TerritoryExample;
+    territoryExample->init();
+    gameObjects.push_back(territoryExample);
 
-    for(int i = 0; i < gameObjects.size(); i++)
-    {
-        if( ! gameObjects[i]->init()) return false;
-    }
-
-    return true;
 }
 
-bool PlayState::onExit()
+void PlayState::onExit()
 {
 
-    return true;
+
 }
 
 void PlayState::update()
@@ -56,10 +46,6 @@ void PlayState::update()
 
     Camera::instance()->setCameraPosition(glm::vec3(camX, 3.0f, camZ));
 
-    for(int i = 0; i < gameControlObjects.size(); i++)
-    {
-        gameControlObjects[i]->update();
-    }
     for(int i = 0; i < gameObjects.size(); i++)
     {
         gameObjects[i]->update();
@@ -68,10 +54,6 @@ void PlayState::update()
 
 void PlayState::draw()
 {
-    for(int i = 0; i < gameControlObjects.size(); i++)
-    {
-        gameControlObjects[i]->draw();
-    }
     for(int i = 0; i < gameObjects.size(); i++)
     {
         gameObjects[i]->draw();
@@ -80,10 +62,6 @@ void PlayState::draw()
 
 void PlayState::playSound()
 {
-    for(int i = 0; i < gameControlObjects.size(); i++)
-    {
-        gameControlObjects[i]->playSound();
-    }
     for(int i = 0; i < gameObjects.size(); i++)
     {
         gameObjects[i]->playSound();
