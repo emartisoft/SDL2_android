@@ -25,7 +25,7 @@ void PauseState::onEnter()
     SDL_Log("screenW = %i   screenH = %i", screenW, screenH);
 
     Button* buttonPlay = new Button;
-    buttonPlay->init(380, 550, 0.9, 400, 200, "resume1.png", "resume2.png");
+    buttonPlay->init(380, 250, 0.9, 400, 200, "resume1.png", "resume2.png");
     buttonPlay->setCallback(pauseToPlay);
     gameObjects.push_back(buttonPlay);
 

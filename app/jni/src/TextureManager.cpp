@@ -14,10 +14,11 @@ TextureManager::~TextureManager()
     textureMap.clear();
 }
 
-bool TextureManager::load_PNG(std::string imagePath, const char* imageID, int* w, int* h)
+bool TextureManager::load_PNG(const char* imageID, int* w, int* h)
 {
     if (textureMap.find(imageID) != textureMap.end()) return true; // exist
 
+    std::string imagePath = std::string("images/") + std::string(imageID);
     SDL_Surface* surface = IMG_Load(imagePath.c_str());
     if( surface == NULL )
     {
@@ -46,6 +47,7 @@ bool TextureManager::load_PNG(std::string imagePath, const char* imageID, int* w
     glBindTexture(GL_TEXTURE_2D, 0);
 
     textureMap[imageID] = glTextureID; // add in map
+    SDL_FreeSurface(surface);
 
     return true;
 }

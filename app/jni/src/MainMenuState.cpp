@@ -32,7 +32,7 @@ void MainMenuState::onEnter()
     SDL_Log("screenW = %i   screenH = %i", screenW, screenH);
 
     Button* buttonPlay = new Button;
-    buttonPlay->init(1050, 70, 0.9, 400, 200, "play1.png", "play2.png");
+    buttonPlay->init(250, 170, 0.9, 400, 200, "play1.png");
     buttonPlay->setCallback(MainMenuState::mainMenuToPlay);
     gameObjects.push_back(buttonPlay);
 

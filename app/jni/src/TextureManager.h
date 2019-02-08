@@ -12,7 +12,7 @@ class TextureManager
 public:
 
     //Load textures to OpenGL Texture
-    bool load_PNG(std::string imagePath, const char* imageID, int* w = nullptr, int* h = nullptr);
+    bool load_PNG(const char* imageID, int* w = nullptr, int* h = nullptr);
 
     void deleteFromTextureMap(const char* id);
 

@@ -51,9 +51,11 @@ bool Button::init(float x, float y, float z, float width, float height,
     shaderProgramButton = ForShaders::makeProgram("/button.vert", "/button.frag");
 
     textureID1 = textureName1;
-    textureID2 = textureName2;
-    TextureManager::instance()->load_PNG(std::string("images/").append(textureName1), textureID1);
-    TextureManager::instance()->load_PNG(std::string("images/").append(textureName2), textureID2);
+    if(textureName2 != nullptr) textureID2 = textureName2;
+    else textureID2 = textureName1;
+
+    TextureManager::instance()->load_PNG(textureID1);
+    TextureManager::instance()->load_PNG(textureID2);
 
     soundClick = Mix_LoadWAV("sounds/menu1.wav");
 

@@ -48,9 +48,8 @@ bool Background::init(kind_of_background kind,
 
     }
 
-
     textureID = textureName;
-    TextureManager::instance()->load_PNG(std::string("images/").append(textureName), textureID);
+    TextureManager::instance()->load_PNG(textureID);
 
     P = Camera::instance()->getCamera2D();
 
